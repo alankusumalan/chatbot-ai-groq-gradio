@@ -56,7 +56,7 @@ os.environ["GRADIO_SHARE"] = "true"  # Link dapat diakses publik; ada password
 Berikut tampilan chatbot AI yang saya buat
 menggunakan Python, Gradio, dan Groq API.
 
-![Tampilan Chatbot AI](screenshots/chatbot-demo.png)
+![Tampilan Chatbot AI](chatbot-demo.png)
 
 
 ## Cara Kerja Sistem
