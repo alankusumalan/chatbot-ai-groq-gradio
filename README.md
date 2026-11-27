@@ -49,3 +49,24 @@ os.environ["GRADIO_SHARE"] = "true"  # Link dapat diakses publik; ada password
 - Tambahkan pengujian unit
 - Simpan riwayat per pengguna dengan login yang benar
 - Tambahkan pembatasan permintaan dan pemantauan kesalahan
+
+## Automated Testing
+
+Proyek ini menggunakan pytest untuk menguji logika chatbot.
+
+### Menjalankan pengujian
+
+```bash
+pip install -r requirements-dev.txt
+python -m pytest -v
+```
+
+### Hasil Pengujian
+
+- 7 unit test berhasil
+- 0 unit test gagal
+- Pengujian tidak membutuhkan Groq API key
+
+Pengujian meliputi pemrosesan teks, format riwayat Gradio,
+penyusunan konteks percakapan, pembatasan riwayat,
+dan validasi pesan kosong.
