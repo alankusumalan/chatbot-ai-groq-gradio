@@ -5,6 +5,7 @@ import os
 import gradio as gr
 from dotenv import load_dotenv
 from groq import Groq, GroqError
+from chatbot_logic import susun_pesan
 
 load_dotenv()
 
@@ -22,48 +23,12 @@ if SHARE and not GRADIO_PASSWORD:
 client = Groq(api_key=API_KEY)
 
 
-def ambil_teks(content):
-    """Normalisasi teks riwayat, termasuk format Gradio 6."""
-    if isinstance(content, str):
-        return content
-
-    if isinstance(content, list):
-        teks = []
-        for blok in content:
-            if isinstance(blok, dict) and blok.get("type") == "text":
-                nilai = blok.get("text", "")
-                if isinstance(nilai, str):
-                    teks.append(nilai)
-        return "\n".join(teks)
-
-    return ""
-
-
 def jawab_ai(pesan, riwayat):
     """Menjawab pesan dan menggunakan 3 pasangan percakapan terakhir."""
     if not isinstance(pesan, str) or not pesan.strip():
         return "Silakan ketik pertanyaan terlebih dahulu."
 
-    konteks = []
-    for item in (riwayat or [])[-6:]:
-        if not isinstance(item, dict):
-            continue
-        role = item.get("role")
-        content = ambil_teks(item.get("content"))
-        if role in ("user", "assistant") and content.strip():
-            konteks.append({"role": role, "content": content})
-
-    messages = [
-        {
-            "role": "system",
-            "content": (
-                "Kamu asisten AI ramah berbahasa Indonesia. "
-                "Jawab secara akurat, jelas, dan mudah dipahami pemula."
-            ),
-        },
-        *konteks,
-        {"role": "user", "content": pesan.strip()},
-    ]
+    messages = susun_pesan(pesan, riwayat)
 
     try:
         response = client.chat.completions.create(
