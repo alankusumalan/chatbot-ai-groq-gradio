@@ -49,8 +49,18 @@ demo = gr.ChatInterface(
     examples=["Apa itu Python?", "Jelaskan machine learning untuk pemula"],
 )
 
+
+# Menjalankan chatbot di hosting
 if __name__ == "__main__":
+
+    if not GRADIO_PASSWORD:
+        raise RuntimeError(
+            "GRADIO_PASSWORD harus diatur sebelum deployment."
+        )
+
     demo.launch(
-        share=SHARE,
-        auth=("belajar-ai", GRADIO_PASSWORD) if GRADIO_PASSWORD else None,
+        server_name="0.0.0.0",
+        server_port=int(os.getenv("PORT", "7860")),
+        share=False,
+        auth=("belajar-ai", GRADIO_PASSWORD)
     )
